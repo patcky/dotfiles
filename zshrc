@@ -27,7 +27,7 @@ eval "$($HOMEBREW_DIR/bin/brew shellenv 2> /dev/null)"
 # --------------RUBY------------------
 # Load rbenv if installed (to manage your Ruby versions)
 # export PATH="${HOME}/.rbenv/bin:${PATH}" # Needed for Linux/WSL
-type -a rbenv > /dev/null && eval "$(rbenv init -)"&& eval "$(rbenv virtualenv-init - 2> /dev/null)" && RPROMPT+='[💎 $(rbenv version-name)]'
+type -a rbenv > /dev/null && eval "$(rbenv init -)"&& eval "$(rbenv virtualenv-init - 2> /dev/null)" && RUBY_VERSION='$(rbenv version-name)'
 
 # Rails and Ruby uses the local `bin` folder to store binstubs.
 # So instead of running `bin/rails` like the doc says, just run `rails`
@@ -58,10 +58,19 @@ load-nvmrc() {
     elif [ "$node_version" != "$(nvm version default)" ]; then
       nvm use default --silent
     fi
-    RPROMPT+='[⬢ $(node --version)]'
+    NODE_VERSION='[$(node --version)]'
   fi
 }
+reload-versions() {
+  # Reload the versions of Ruby, Node.js, and Python
+  RUBY_VERSION="$(ruby -v | cut -d ' ' -f 2)"
+  NODE_VERSION="$(node --version)"
+  PYTHON_VERSION="$(python --version 2>&1 | cut -d ' ' -f 2)"
+  RPROMPT='💎 $RUBY_VERSION | ⬢ $NODE_VERSION | 🐍 $PYTHON_VERSION'
+}
+
 type -a nvm > /dev/null && add-zsh-hook chpwd load-nvmrc
+type -a nvm > /dev/null && add-zsh-hook chpwd reload-versions
 type -a nvm > /dev/null && load-nvmrc
 
 # --------------PYTHON--------------
@@ -71,7 +80,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 
 # Load pyenv (to manage your Python versions)
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-type -a pyenv > /dev/null && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init - 2> /dev/null)" && RPROMPT+='[🐍 $(pyenv version-name)]'
+type -a pyenv > /dev/null && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init - 2> /dev/null)" && PYTHON_VERSION='$(pyenv version-name)'
 
 # Set ipdb as the default Python debugger
 export PYTHONBREAKPOINT=ipdb.set_trace
@@ -87,3 +96,5 @@ export LC_ALL=en_US.UTF-8
 # Set VSCode as default editor
 export BUNDLER_EDITOR=code
 export EDITOR=code
+
+reload-versions
