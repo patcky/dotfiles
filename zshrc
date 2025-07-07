@@ -40,7 +40,6 @@ export NVM_DIR="$HOMEBREW_DIR/opt/.nvm" # Change this if you didn't use Homebrew
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/etc/bash_completion.d/nvm" ] && \. "$NVM_DIR/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-autoload -U add-zsh-hook
 # Call `nvm use` automatically in a directory with a `.nvmrc` file
 load-nvmrc() {
   if nvm -v &> /dev/null; then
@@ -61,17 +60,21 @@ load-nvmrc() {
     NODE_VERSION='[$(node --version)]'
   fi
 }
+
 reload-versions() {
   # Reload the versions of Ruby, Node.js, and Python
   RUBY_VERSION="$(ruby -v | cut -d ' ' -f 2)"
   NODE_VERSION="$(node --version)"
   PYTHON_VERSION="$(python --version 2>&1 | cut -d ' ' -f 2)"
+# Update the terminal right prompt with the current versions
   RPROMPT='💎 $RUBY_VERSION | ⬢ $NODE_VERSION | 🐍 $PYTHON_VERSION'
 }
 
+autoload -U add-zsh-hook
+# Check for node versions and switch automatically when changing folders
 type -a nvm > /dev/null && add-zsh-hook chpwd load-nvmrc
+# Reload all versions when changing directories
 type -a nvm > /dev/null && add-zsh-hook chpwd reload-versions
-type -a nvm > /dev/null && load-nvmrc
 
 # --------------PYTHON--------------
 # Setup the PATH for pyenv binaries and shims
@@ -97,4 +100,6 @@ export LC_ALL=en_US.UTF-8
 export BUNDLER_EDITOR=code
 export EDITOR=code
 
+# Call `load-nvmrc` and `reload-versions` on shell start
+load-nvmrc
 reload-versions
