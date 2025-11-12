@@ -110,3 +110,5 @@ autoload -Uz compinit && compinit
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/pcamiansky/.docker/completions $fpath)
 # End of Docker CLI completions
+
+eval "$(/Users/pcamiansky/code/hemnet/hemnet-terminal-command/bin/hemnet init - zsh)"
