@@ -5,8 +5,4 @@ alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 # Quickly serve the current directory as HTTP
 alias serve='ruby -run -e httpd . -p 8000' # Or python -m SimpleHTTPServer :)
 
-# Git stuff
-alias gc="git commit -m"
-alias ga="git add ."
-
 source ~/.config/hemnet-aliases

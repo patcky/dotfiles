@@ -66,7 +66,7 @@ reload-versions() {
   RUBY_VERSION="$(ruby -v | cut -d ' ' -f 2)"
   NODE_VERSION="$(node --version)"
   PYTHON_VERSION="$(python --version 2>&1 | cut -d ' ' -f 2)"
-# Update the terminal right prompt with the current versions
+  # Update the terminal right prompt with the current versions
   RPROMPT='💎 $RUBY_VERSION | ⬢ $NODE_VERSION | 🐍 $PYTHON_VERSION'
 }
 
@@ -103,3 +103,10 @@ export EDITOR=code
 # Call `load-nvmrc` and `reload-versions` on shell start
 load-nvmrc
 reload-versions
+
+# Enable command auto-completion
+autoload -Uz compinit && compinit
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/pcamiansky/.docker/completions $fpath)
+# End of Docker CLI completions
